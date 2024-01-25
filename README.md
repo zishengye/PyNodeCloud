@@ -1,2 +1,2 @@
-# pynodecloud
+# PyNodeCloud
 Python Interface for NodeCloud
