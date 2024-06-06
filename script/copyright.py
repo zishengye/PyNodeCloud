@@ -65,11 +65,17 @@ def is_license_in_first_lines(file_path, num_lines=5):
     return False
 
 # Update license year in C++ and Python files
-def update_add_license():    
+def update_add_license():
+    previous_length = 0
+    found_file_counter = 0
+    update_file_counter = 0
     for directory in directories:
         for ext in extensions:
             for file in pathlib.Path(directory).rglob(f'*{ext}'):
-                print(file)
+                print(str(file).ljust(max(len(str(file)), previous_length)), end='\r', flush=True)
+                previous_length = len(str(file))
+                
+                found_file_counter += 1
                 
                 with open(file, 'r+') as f:
                     if is_license_in_first_lines(file):
@@ -88,6 +94,7 @@ def update_add_license():
                     f.write(content)
                     f.truncate()
 
+    print("Found {} files, updated {} files.".format(found_file_counter, update_file_counter))
     print("License years updated to {}.".format(current_year))
     
 def remove_license():
